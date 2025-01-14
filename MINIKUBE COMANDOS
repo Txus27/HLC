@@ -1,0 +1,8 @@
+minikube start
+minikube ip 192.168.159.131
+minikube ssh
+
+#Para ver los archivos ocultos: ls -la /home/juanlu/
+
+#Para aver información del cluster: cat home/juanlu/.kube/config 
+
