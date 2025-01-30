@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webcv-s
+  labels:
+    app: webcv
+spec:
+  selector:
+    app: webcv
+  type: NodePort
+  ports:
+  - name: http-port
+    protocol: TCP
+    port: 80  # Puerto expuesto en el servicio
+    targetPort: 8080  # Puerto expuesto en el Dockerfile
+    nodePort: 30080  # Para acceder desde el exterior (en el rango 30000-32767)

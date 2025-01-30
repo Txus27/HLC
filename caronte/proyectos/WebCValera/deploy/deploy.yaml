@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webcv-d
+  labels:
+    app: webcv
+spec: #Especificaciones del DEPLOY
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webcv
+  template:
+    metadata:
+      labels: 
+        app: webcv
+    spec: #Especificaciones del POD
+      containers:
+        - name: webcv
+          image: txus027/webcvalera:latest
+          ports:
+            - containerPort: 80 #Tiene que coincidir con el puerto expuestro en Dokerfile
+          envFrom:
+            - configMapRef:
+                name: app-env
+
+#---

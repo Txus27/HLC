@@ -1,0 +1,30 @@
+ARG AUTOR
+FROM ${AUTOR}/jls-nginx
+
+ARG CONTEXT
+ARG TZ
+ARG PROYECTO
+ARG USUARIO="juanlu"
+ARG PASSWORD="usuario"
+ARG GITHUB
+
+
+#Verificar nombres de paquetes de programas
+RUN apt update && apt install -yq --no-install-recommends
+RUN apt install -yq curl gnupg software-properties-common
+# RUN curl -fsSL https://deb.nodesource.com/setup_18 | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+RUN apt install -y nodejs
+#RUN node --version && npm --version
+
+EXPOSE 3000
+
+USER root
+RUN mkdir /root/admin/react
+COPY ./dockerfiles/js/react/admin /root/admin/react
+RUN chmod +x /root/admin/react/start.sh
+
+RUN mkdir -p /var/log/react
+WORKDIR /root/admin/react
+
+ENTRYPOINT ["/root/admin/react/start.sh"]
