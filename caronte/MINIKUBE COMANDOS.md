@@ -1,15 +1,28 @@
-# Iniciamos el programa con: minikube start
+# La primera vez que lo instalas, hay que descargar minikube y por separado kubectl
+
+# Iniciamos el programa con: 
+    minikube start
+
+# Siempre detener la imagen antes de salir:
+    minikube stop
+
+# Eliminar minikube:
+    minikube delete
+
 minikube ip <IpDelAnfitrión> (192.168.159.131)
 minikube ssh
 
+# Para ver los datos de minikube:
+    minikube profile list
+
 # Para entrar a un contenedor es:
-    <IpDelAnfitrión>:<PuertoRedireccionado> (http://192.168.159.131:8085)
+    <IpDelAnfitrión>:<PuertoRedireccionado> (http://192.168.159.137:8085)
 
 # Para ver los archivos ocultos: 
     ls -la /home/juanlu/
 
 # Para ver el DEPLOY que tengo en ejecución:
-     kubectl get deploy
+    kubectl get deploy
 
 # Para ver los pods en ejecución: 
     kubectl get pods
@@ -29,10 +42,20 @@ minikube ssh
 
     kubectl delete pods <NombreDelPod> -> EJ: kubectl delete pod nginx3
 
-# Aplicar el manifiesto
-kubectl apply -f <NombreFicheroYaml> -> EJ: kubectl apply -f nginx.yaml
+# Borrar un servicio:
+    kubectl get services
+    kubectl delete service <NombreServivio> 
+    - EJ: kubectl delete service webcv-d
 
-# Volcar el fichero .env dentro de kubernetes a traves del comando ConfigMap
+# Aplicar el manifiesto
+kubectl apply -f <NombreFicheroYaml> 
+    Ejemplos: 
+        kubectl apply -f nginx.yml
+        kubectl apply -f deploy.yaml
+        kubectl apply -f servicio.yml
+        kubectl apply -f servicioLB.yml (Con balanceador de carga)
+
+# Volcar el fichero .env dentro de kubernetes a traves del comando ConfigMap (Hacer cada vez que borre todos los datos)
 
     kubectl create configmap app-env --from-env-file=.env
 
@@ -48,4 +71,19 @@ kubectl apply -f <NombreFicheroYaml> -> EJ: kubectl apply -f nginx.yaml
     kubectl scale deploy <Metadata-name> --replicas=<NumeroDeseado>
     EJ= kubectl scale deploy webcv-d --replicas=3
 
-# 
+# Para ver los servicios en ejecución
+    kubectl get services
+
+# Redirigir puertos desde tu máquina local a un servicio dentro de un clúster de Kubernetes, aplicamos un Port-Forward:
+    kubectl port-forward svc/webcv-s 30080:80
+
+# Conexion limpia con un tunel 
+    minikube tunnel --bind-address=0.0.0.0 --cleanup
+# Y accedemos con la IP de la maquina anfitriona(Ubuntu Server) y el puerto especificado en el servicio:
+    http://192.168.159.137:8088/
+
+# Para hacer una redireccion de puertos y entrar desde el exterior a traves del navegador (Los pods deben estar en ejecución)
+    kubectl port-forward --address 0.0.0.0 services/webcv-s 8083:80
+
+# Ya puedo entrar al servicio a través de la IP de la maquina que ejecuta el servicio de Kubernetes y el puerto que he redirigido:
+    http://192.168.159.137:8083/

@@ -12,5 +12,5 @@ spec:
   - name: http-port
     protocol: TCP
     port: 80  # Puerto expuesto en el servicio
-    targetPort: 8080  # Puerto expuesto en el Dockerfile
-    nodePort: 30080  # Para acceder desde el exterior (en el rango 30000-32767)
+    targetPort: 80  # Puerto expuesto en el Dockerfile
+    nodePort: 30080  # Para acceder desde el exterior 
