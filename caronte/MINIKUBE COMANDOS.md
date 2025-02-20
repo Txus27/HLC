@@ -77,13 +77,13 @@ kubectl apply -f <NombreFicheroYaml>
 # Redirigir puertos desde tu máquina local a un servicio dentro de un clúster de Kubernetes, aplicamos un Port-Forward:
     kubectl port-forward svc/webcv-s 30080:80
 
-# Conexion limpia con un tunel 
+# Conexion limpia con un tunel -> (Cuando usamos LoadBalancer)
     minikube tunnel --bind-address=0.0.0.0 --cleanup
-# Y accedemos con la IP de la maquina anfitriona(Ubuntu Server) y el puerto especificado en el servicio:
+# Y accedemos con la IP de la maquina anfitriona(Ubuntu Server) y el puerto especificado en el servicio -> (Cuando usamos LoadBalancer):
     http://192.168.159.137:8088/
 
-# Para hacer una redireccion de puertos y entrar desde el exterior a traves del navegador (Los pods deben estar en ejecución)
+# Para hacer una redireccion de puertos y entrar desde el exterior a traves del navegador (Los pods deben estar en ejecución) -> (Cuando usamos NodePort)
     kubectl port-forward --address 0.0.0.0 services/webcv-s 8083:80
 
-# Ya puedo entrar al servicio a través de la IP de la maquina que ejecuta el servicio de Kubernetes y el puerto que he redirigido:
-    http://192.168.159.137:8083/
+# Ya puedo entrar al servicio a través de la IP de la maquina que ejecuta el servicio de Kubernetes y el puerto que he redirigido -> (Cuando usamos NodePort):
+        http://192.168.159.137:8083/

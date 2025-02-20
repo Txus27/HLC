@@ -1,10 +1,10 @@
 Para ver lo que se va a generar al levantar el contenedor: 
-docker-compose --env-file .env -f docker-compose.yml config        //FUNCIONA
+docker compose --env-file .env -f docker-compose.yml config        //FUNCIONA
 
 Levantar un contenedor:
 (Hay que estar en la terminal en el directorio DEPLOY del proyecto que vayamos a levantar): 
 
-docker-compose -f docker-compose.yml up -d --build   	 //FUNCIONA
+docker compose -f docker-compose.yml up -d --build   	 //FUNCIONA
 
 Crear contenedores individuales basándose en la imagen ya creada del paso anterior usando docker-compose:
 
@@ -43,7 +43,7 @@ sudo usermod -aG sudo juanlu
 
 Crear clave pública SSH:
 
-  ssh -keygen
+  ssh-keygen
 
 Y NO le ponemos contraseña a la clave ir_rsa.pub generada.
 
