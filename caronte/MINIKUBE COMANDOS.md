@@ -87,3 +87,73 @@ kubectl apply -f <NombreFicheroYaml>
 
 # Ya puedo entrar al servicio a través de la IP de la maquina que ejecuta el servicio de Kubernetes y el puerto que he redirigido -> (Cuando usamos NodePort):
         http://192.168.159.137:8083/
+
+# Crear una NAMESPACE:
+     kubectl create namespace <NombreNameSpace> 
+     --> kubectl create namespace jenkins-sp
+
+# Crear un VOLUMEN PERSISTENTE:
+    kubectl apply -f <NombreArchivo> --> kubectl apply -f pvc.yaml 
+
+CREAR DOCUMENTO pvc.yaml:
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins
+  namespace: jenkins-sp
+spec:
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+
+# Para ver los datos del VOLUMEN PERSISTENTE:
+    kubectl get pvc -n <NameSpace> --> kubectl get pvc -n jenkins-sp
+
+# Para ver los datos del LoadBalancer del NameSpace
+    kubectl get svc -n jenkins-sp
+
+# Para borrar todo el contenido del NAMESPACE
+    kubectl delete all --all -n <nombre_del_namespace>
+
+
+## DE FREDI ##
+# Proceso de despliegue de jenkins en kubernetes #
+##################################################
+
+# 1. Crear un namespace
+kubectl create namespace jenkins-sp
+kubectl get namespace                   # Verificar el namespace
+
+# 2. Levantar un persistent volume claim (pvc)
+kubectl apply -f pvc.yaml
+kubectl get pvc -n jenkins-sp           # Verificar el pvc
+
+# 3. Levantar un deployment
+kubectl apply -f deploy.yaml
+kubectl get deploy -n jenkins-sp        # Verificar el deployment
+
+# 4. Crear un Tunnel - para acceder al servicio desde el exterior del clúster
+minikube tunnel --bind-address=0.0.0.0 --cleanup     # Abrir ( En otra terminal )
+
+# 5. Leavantar un servicio
+kubectl apply -f service.yaml
+kubectl get svc -n jenkins-sp           # Verificar el servicio
+
+#### INGRESAR JENKIS
+    ------ INGRESANDO A JENKINS DESDE AFUERA------
+    http://161.97.91.36:8070/login?from=%2F
+
+    ingresar la clave 
+    1ero saber el nombre del pods creado
+        kubectl get pods -n jenkins-sp
+    --- buscamos la clave de esta ID--------
+        kubectl logs jenkins-6c955dd78f-fnd5j -n 
+    jenkins-sp
+    mi clave:   666
+
+    jenkis url http://161.97.91.36:8070/
+
+# 

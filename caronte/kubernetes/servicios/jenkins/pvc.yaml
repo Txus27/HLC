@@ -1,0 +1,13 @@
+#Para crear un volumen dentro de Kubernetes
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pvc
+  namespace: jenkins-sp
+spec:
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce

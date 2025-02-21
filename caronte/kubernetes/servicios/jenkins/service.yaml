@@ -1,0 +1,21 @@
+#Antes de aplicar el servicio.yaml hay que crear el TUNEL: 
+#   minikube tunnel --bind-address=0.0.0.0 -- cleanup
+#También hay que abrir el puerto que hayamos puesto en la sección PORT de la sección WEB en SERVICE:YAML:
+#   sudo ufw allow 8080/tcp
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+  namespace: jenkins-sp
+spec:
+  selector:
+    app: jenkins
+  type: LoadBalancer
+  ports:
+    - name: web
+      port: 8080
+      targetPort: 8080
+    - name: agent
+      port: 50000
+      targetPort: 50000
