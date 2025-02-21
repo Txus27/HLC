@@ -113,13 +113,20 @@ spec:
     kubectl get pvc -n <NameSpace> --> kubectl get pvc -n jenkins-sp
 
 # Para ver los datos del LoadBalancer del NameSpace
+# Para ver volumenes
     kubectl get svc -n jenkins-sp
+# Peara ver servicios
+    kubectl get services -n jenkins-sp
+
+# Para borrar un servicio
+    kubectl delete svc jenkins -n jenkins-sp
 
 # Para borrar todo el contenido del NAMESPACE
     kubectl delete all --all -n <nombre_del_namespace>
+        -> kubectl delete all --all -n jenkins-sp
 
 
-## DE FREDI ##
+## DE FREDI para entrar en Jenkins ##
 # Proceso de despliegue de jenkins en kubernetes #
 ##################################################
 
@@ -156,4 +163,15 @@ kubectl get svc -n jenkins-sp           # Verificar el servicio
 
     jenkis url http://161.97.91.36:8070/
 
-# 
+# ** Instalación de Jenkins desde NodePort **
+# Aplicamos el servicio de NodePort
+    kubectl apply -f serviceND.yaml
+
+# Para ver el servicio que he desplegado
+    kubectl get services -n jenkins-sp
+
+# Para acceder desde internet
+    minikube service jenkins-svc -n jenkins-sp --url
+# Para hacer un tunel por
+    kubectl port-forward --address 0.0.0.0 services/jenkins-svc 8084:8081 -n jenkins-sp
+    ** Se entra desde aqui IpVPS:Puerto: http://173.249.19.114:8084/ **
