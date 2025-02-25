@@ -235,3 +235,4 @@ kubectl get svc -n jenkins-sp           # Verificar el servicio
 # Ver el contenido que me devuelve 
     curl http://192.168.58.2:31252
 #
+    
