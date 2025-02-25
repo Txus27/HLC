@@ -121,6 +121,9 @@ spec:
 # Para borrar un servicio
     kubectl delete svc jenkins -n jenkins-sp
 
+# Borrar el NAMESPACE
+    kubectl delete namespace ingress-nginx
+
 # Para borrar todo el contenido del NAMESPACE
     kubectl delete all --all -n <nombre_del_namespace>
         -> kubectl delete all --all -n jenkins-sp
@@ -175,3 +178,60 @@ kubectl get svc -n jenkins-sp           # Verificar el servicio
 # Para hacer un tunel por
     kubectl port-forward --address 0.0.0.0 services/jenkins-svc 8084:8081 -n jenkins-sp
     ** Se entra desde aqui IpVPS:Puerto: http://173.249.19.114:8084/ **
+
+# ** Nginx Ingress Controller **
+
+# Primero instalamos Helm (Gestor de paquetes de kubernetees)
+    sudo snap install helm --classic
+
+# Para ver la version de Helm 
+    helm version
+
+# Para BORRAR Helm
+    sudo snap remove helm
+
+# Para ACTUALIZAR Helm
+    sudo snap refresh helm
+
+# Instalar NGINX Ingress
+
+    minikube addons enable ingress
+
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+    helm repo update
+
+    helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+
+# Ver la lista de ese namespace
+    helm list -n ingress-nginx
+
+# Borrar el Ingress
+    kubectl delete ingressclass nginx
+
+# Borrar ClusterRole
+    kubectl delete clusterrole nginx-ingress-ingress-nginx
+
+# Eliminar el ValidatingWebhookConfiguration conflictivo
+    kubectl delete validatingwebhookconfiguration nginx-ingress-ingress-nginx-admission
+
+# Para ver los PODS de un NAMESPACE
+    kubectl get pods -n ingress-nginx
+
+# Para Ver el SERVICIO en un NAMESPACE (Ver la IP para acceder)
+    kubectl get svc -n ingress-nginx
+
+# Para ver los SERVICIOS (Ver la IP para acceder)
+    kubectl get services
+
+# Para cambiar el tipo de ClusterIP a NodePort
+    kubectl patch svc nginx-ingress-controller -n ingress-nginx -p '{"spec": {"type": "NodePort"}}'
+
+# Para ver la IP interna de MINIKUBE
+    kubectl get nodes -o wide
+
+# Para ver si tengo conexion con la INTERNAL IP del MINIKUBE y el Puerto del NodePort
+    nc -zv 192.168.58.2 31252
+# Ver el contenido que me devuelve 
+    curl http://192.168.58.2:31252
+#
