@@ -4,7 +4,7 @@
 # Levantar un contenedor:
   (Hay que estar en la terminal en el directorio DEPLOY del proyecto que vayamos a levantar): 
 
-  docker-compose -f docker-compose.yml up -d --build
+  docker compose -f docker-compose.yml up -d --build
 
 # Crear contenedores individuales basándose en la imagen ya creada del paso anterior usando docker-compose:
   docker run --name miservidor1 -e USUARIO=juanlu -e PASSWORD=usuario -p 8083:80  juanluissanchez/jls-nginx

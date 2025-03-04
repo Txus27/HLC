@@ -1,0 +1,25 @@
+# SERVICE NODEPORT
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+  namespace: jenkins-sp
+spec:
+  selector:
+    app: jenkins
+  type: NodePort # Usamos NodePort en lugar de LoadBalancer
+  ports:
+    - name: web
+      port: 8081 # Puerto interno del servicio dentro del clúster de Kubernetes
+      targetPort: 8080 # Puerto expuesto del contenedor Jenkins
+      nodePort: 32090 # Puerto INTERNO de los los NODOS para comunicarse entre ellos (Debe estar entre el 30000-32767)
+    - name: agent
+      port: 50000
+      targetPort: 50000
+      nodePort: 32060 # Puerto para los AGENTES de Jenkis de forma interna
+
+# Para crear el servicio, ejecutamos el siguiente comando:
+# kubectl apply -f serviceND.yaml
+# kubectl get svc -n jenkins-sp
+# kubectl port-forward --address 0.0.0.0 services/jenkins-svc 8084:8081 -n jenkins-sp
